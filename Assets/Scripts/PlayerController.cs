@@ -39,4 +39,12 @@ public class PlayerController : MonoBehaviour
             transform.position = transform.position.z > 0 ? new Vector3(transform.position.x, transform.position.y, zBound) : new Vector3(transform.position.x, transform.position.y, -zBound);
         }
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("PowerUp"))
+        {
+            Destroy(other.gameObject);
+        }
+    }
 }
