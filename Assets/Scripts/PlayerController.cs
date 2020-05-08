@@ -15,20 +15,43 @@ public class PlayerController : MonoBehaviour
     private float yBound = 0.7f;
 
     private bool isOnGround = true;
-    
+
+    //powerups
+
+    private bool stayHomeActive = false;
+    private bool firstAidActive = false;
+    private bool cityHeroActive = false;
+    private bool wearMaskActive = false;
+    private bool washHandsActive = false;
+
+    public List<bool> powerups = new List<bool>();
+
+    private int powerupValidTime = 3;
+
+    public bool[] t;
+
+     
+
+
 
     // Start is called before the first frame update
     void Start()
     {
         playerRb = GetComponent<Rigidbody>();
+
+        initializePowerups();
         Physics.gravity *= gravityModifier;
+        t = new bool[1] { true };
+        
+
+      
     }
 
     // Update is called once per frame
     void Update()
     {
         movePlayer();
-        Debug.Log(pos().y);
+        //Debug.Log("stayHomeActive " + stayHomeActive);
         //constrain();
         //gravity();
 
@@ -78,20 +101,32 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("PowerUp"))
+        
+        switch (other.tag)
         {
-            Destroy(other.gameObject);
+            case "StayHome":
+                powerActivator(0);
+                break;
+
+            case "FirstAid":
+                powerActivator(1);
+                break;
+
+            case "CityHero":
+                powerActivator(2);
+                break;
+
+            case "WearMask":
+                powerActivator(3);
+                break;
+
+            case "WashHands":
+                powerActivator(4);
+                break;
+
         }
 
-        //if (other.CompareTag("Enemy"))
-        //{
-        //    Destroy(other.gameObject);
-        //}
-
-        //if (other.CompareTag("Wall"))
-        //{
-        //    transform.position = pos();
-        //}
+        Destroy(other.gameObject);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -107,5 +142,32 @@ public class PlayerController : MonoBehaviour
     {
         return transform.position;
     }
+
+    //change froze the powerup
+    private void powerActivator(int idx)
+    {
+        powerups[idx] = true;
+        StartCoroutine(powerupDeactive(idx));
+
+    }
+
+    //add powerup froze delay
+    IEnumerator powerupDeactive(int idx)
+    {
+        yield return new WaitForSeconds(powerupValidTime);
+        powerups[idx] = false;
+    }
+
+    private void initializePowerups()
+    {
+        powerups.Add(stayHomeActive);
+        powerups.Add(firstAidActive);
+        powerups.Add(cityHeroActive);
+        powerups.Add(wearMaskActive);
+        powerups.Add(washHandsActive);
+
+    }
+
+
 
 }

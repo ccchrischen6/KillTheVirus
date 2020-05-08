@@ -8,6 +8,11 @@ TagManager:
   - Enemy
   - Wall
   - Ground
+  - FirstAid
+  - CityHero
+  - WearMask
+  - WashHands
+  - StayHome
   layers:
   - Default
   - TransparentFX
