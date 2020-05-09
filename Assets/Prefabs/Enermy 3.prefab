@@ -13,7 +13,8 @@ GameObject:
   - component: {fileID: 122259489212600187}
   - component: {fileID: 122259489212608644}
   - component: {fileID: 122259489212600191}
-  - component: {fileID: 122259489212600184}
+  - component: {fileID: 5642199725846682613}
+  - component: {fileID: -5976750034805049761}
   m_Layer: 0
   m_Name: Enermy 3
   m_TagString: Enemy
@@ -111,7 +112,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 4
   m_CollisionDetection: 0
---- !u!114 &122259489212600184
+--- !u!114 &5642199725846682613
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -123,6 +124,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a05202b7610c049b9a52bbe19123335c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 0.01
-  normMoveSpeed: 0.01
-  slowMoveSpeed: 0.007
+  moveSpeed: 0.03
+  normMoveSpeed: 0.03
+  slowMoveSpeed: 0.001
+  startMoveDistance: 11
+--- !u!114 &-5976750034805049761
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 122259489212608645}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5520c2dd8d044aeabc4fd53a7cc880d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  virusLife: 10

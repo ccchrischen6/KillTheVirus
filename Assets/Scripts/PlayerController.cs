@@ -16,12 +16,14 @@ public class PlayerController : MonoBehaviour
 
     //virus properties
     public int virusAttackValue = 10;
+    public int infectedNum = 0;
 
 
     //player basic motion settings
     public float moveSpeed = 0.03f;
     public float normSpeed = 0.03f;
     public float slowSpeed = 0.025f;
+    private float fastSpeed = 0.06f;
     public float jumpForce = 3.0f;
     public float gravityModifier;
     private float zBound = 25.0f;
@@ -41,12 +43,16 @@ public class PlayerController : MonoBehaviour
     private bool wearMaskActive = false;
     private bool washHandsActive = false;
     public List<bool> powerups = new List<bool>();
-    private int powerupValidTime = 3;
+    private int powerupValidTime = 5;
+    public int availablePowerups = 2;
 
     private int firstAidAddHP = 20;
     private int invincibleTime = 5;
     private bool isInvincible = false;
     private bool isWashHandsActive = false;
+    private bool isCityHero = false;
+
+    SpawnManager spawnManager;
 
 
 
@@ -55,6 +61,9 @@ public class PlayerController : MonoBehaviour
     {
         playerRb = GetComponent<Rigidbody>();
         moveSpeed = normSpeed;
+
+        spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
+
 
         initializePowerups();
         Physics.gravity *= gravityModifier;
@@ -67,11 +76,7 @@ public class PlayerController : MonoBehaviour
     {
         movePlayer();
         if (HP <= 0 && !isInvincible) isGameOver = true;
-        Debug.Log("isGameOver " + isGameOver);
-        //constrain();
-
-
-
+        availablePowerups += spawnManager.addedPowerups;
 
     }
 
@@ -79,8 +84,6 @@ public class PlayerController : MonoBehaviour
     private void movePlayer()
     {
         basicControl();
-
-
     }
 
     //make sure player moves inside the border
@@ -110,6 +113,7 @@ public class PlayerController : MonoBehaviour
 
             case "CityHero":
                 powerActivator(2);
+                cityHero();
                 break;
 
             case "WearMask":
@@ -123,30 +127,14 @@ public class PlayerController : MonoBehaviour
                 break;
 
         }
-
+        
+        availablePowerups--;
         Destroy(other.gameObject);
     }
 
-    //remain invincible for invincibleTime
-    private void wearMask()
-    {
-        isInvincible = true;
-        StartCoroutine(invincible());
-    }
 
-    IEnumerator invincible()
-    {
-        yield return new WaitForSeconds(invincibleTime);
-        isInvincible = false;
 
-    }
 
-    //add firstAidAddHP to HP
-    private void firstAid()
-    {
-        HP += firstAidAddHP;
-        HP = HP > 100 ? 100 : HP;
-    }
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -169,9 +157,12 @@ public class PlayerController : MonoBehaviour
             }
             washHandsActive = false;
 
+            infectedNum++;
+
 
         }
     }
+
 
     //get the current position of gameObject
     private Vector3 pos()
@@ -179,7 +170,67 @@ public class PlayerController : MonoBehaviour
         return transform.position;
     }
 
-    //change froze the powerup
+    //Player's motion control
+    private void basicControl()
+    {
+        float xInput = Input.GetAxis("Horizontal");
+        float zInput = Input.GetAxis("Vertical");
+        if (Input.GetKeyDown(KeyCode.Space) && isOnGround)
+        {
+            float yInput = jumpForce;
+            isOnGround = false;
+            playerRb.AddForce(Vector3.up * yInput, ForceMode.Impulse);
+        }
+
+        transform.position = new Vector3(pos().x + moveSpeed * xInput,
+            pos().y, pos().z + moveSpeed * zInput);
+
+        xInput = zInput = 0;
+    }
+
+
+    //add firstAidAddHP to HP
+    private void firstAid()
+    {
+        HP += firstAidAddHP;
+        HP = HP > 100 ? 100 : HP;
+    }
+
+    //remain invincible for invincibleTime
+    private void wearMask()
+    {
+        isInvincible = true;
+        StartCoroutine(invincible());
+    }
+
+    IEnumerator invincible()
+    {
+        yield return new WaitForSeconds(invincibleTime);
+        isInvincible = false;
+
+    }
+
+    IEnumerator speedDown()
+    {
+        yield return new WaitForSeconds(slowSpeedTime);
+        moveSpeed = normSpeed;
+    }
+
+    private void cityHero(){
+        isCityHero = true;
+        moveSpeed = fastSpeed;
+        StartCoroutine(cityHeroHandler());
+    }
+
+    IEnumerator cityHeroHandler()
+    {
+        yield return new WaitForSeconds(powerupValidTime);
+        isCityHero = false;
+        moveSpeed = normSpeed;
+    }
+
+
+    //froze the powerup after activated
     private void powerActivator(int idx)
     {
         powerups[idx] = true;
@@ -202,31 +253,6 @@ public class PlayerController : MonoBehaviour
         powerups.Add(wearMaskActive);
         powerups.Add(washHandsActive);
 
-    }
-
-    //Player's motion control
-    private void basicControl()
-    {
-        float xInput = Input.GetAxis("Horizontal");
-        float zInput = Input.GetAxis("Vertical");
-        if (Input.GetKeyDown(KeyCode.Space) && isOnGround)
-        {
-            float yInput = jumpForce;
-            isOnGround = false;
-            playerRb.AddForce(Vector3.up * yInput, ForceMode.Impulse);
-        }
-
-        transform.position = new Vector3(pos().x + moveSpeed * xInput,
-            pos().y, pos().z + moveSpeed * zInput);
-
-        xInput = zInput = 0;
-    }
-
-
-    IEnumerator speedDown()
-    {
-        yield return new WaitForSeconds(slowSpeedTime);
-        moveSpeed = normSpeed;
     }
 
 
