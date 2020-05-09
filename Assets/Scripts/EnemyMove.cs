@@ -33,19 +33,10 @@ public class EnemyMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-        Vector3 moveDirection = ((pos(player) - pos()).normalized)*moveSpeed;
+
+        Vector3 moveDirection = ((pos(player) - pos()).normalized) * moveSpeed;
         transform.position = new Vector3(pos().x + moveDirection.x, pos().y, pos().z + moveDirection.z);
         powerupsListener();
-        //if (powerups != null)
-        //{
-        //    Debug.Log("length: " + GetComponent<PlayerController>().powerups.Length);
-
-        //}
-
-
-
-
 
     }
 
@@ -70,7 +61,6 @@ public class EnemyMove : MonoBehaviour
             {
                 if (powerups[i])
                 {
-                    Debug.Log(i);
                     startEffect(i);
                 }
 
@@ -81,39 +71,27 @@ public class EnemyMove : MonoBehaviour
     //handle the effect if the powerup is activated
     private void startEffect(int i)
     {
-
-      
-
         switch (i)
         {
             //stayHome
             case 0:
-                Debug.Log("Yes");
                 staryHome();
                 break;
 
             //firstAid
             case 1:
-                Debug.Log("Yes");
-                firstAid();
                 break;
 
             //cityHero
             case 2:
-                Debug.Log("Yes");
-                cityHero();
                 break;
 
             //wearMask
             case 3:
-                Debug.Log("Yes");
-                wearMash();
                 break;
 
             //washHands
             case 4:
-                Debug.Log("Yes");
-                washHands();
                 break;
         }
 
@@ -127,29 +105,6 @@ public class EnemyMove : MonoBehaviour
         moveSpeed = slowMoveSpeed;
         StartCoroutine(moveSlow());
     }
-
-    private void washHands()
-    {
-        
-
-    }
-
-    private void wearMash()
-    {
-        throw new NotImplementedException();
-    }
-
-    private void cityHero()
-    {
-        throw new NotImplementedException();
-    }
-
-    private void firstAid()
-    {
-        throw new NotImplementedException();
-    }
-
-    
 
 
     //revert the moving speed after delay

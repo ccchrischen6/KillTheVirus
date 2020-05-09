@@ -1,8 +1,8 @@
 ﻿<Properties StartupConfiguration="{434CC581-13B3-48E6-7568-3DEEA75E2EB5}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/PlayerController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/EnemyMove.cs">
     <Files>
-      <File FileName="Assets/Scripts/PlayerController.cs" Line="27" Column="13" />
-      <File FileName="Assets/Scripts/EnemyMove.cs" Line="24" Column="52" />
+      <File FileName="Assets/Scripts/PlayerController.cs" Line="18" Column="1" />
+      <File FileName="Assets/Scripts/EnemyMove.cs" Line="129" Column="6" />
       <File FileName="Assets/Scripts/SpawnManager.cs" Line="39" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
